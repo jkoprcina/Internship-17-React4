@@ -1,0 +1,13 @@
+.dice-index {
+  width: 20px;
+  height: 20px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-11px, -11px);
+  position: absolute;
+  text-align: center;
+  line-height: 20px;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 50%;
+}

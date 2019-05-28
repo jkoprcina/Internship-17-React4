@@ -1,0 +1,12 @@
+.gameboard {
+  display: flex;
+  flex-direction: column;
+  margin-left: 50%;
+  margin-top: 100px;
+}
+
+.field-row {
+  display: flex;
+  justify-content: center;
+  margin-top: -30px;
+}
