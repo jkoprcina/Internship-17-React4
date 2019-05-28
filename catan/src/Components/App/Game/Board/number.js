@@ -1,20 +1,16 @@
 import React from "react";
-import "../../Css/Board/number.css";
+import "../../../../Css/Board/number.css";
 
 class Number extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      value : null
-    }
+      value: null
+    };
   }
   render() {
-    return (
-    <div className="dice-index">
-      
-    </div>
-    );
+    return <div className="dice-index" />;
   }
 }
 

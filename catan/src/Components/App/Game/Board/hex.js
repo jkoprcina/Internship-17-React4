@@ -2,7 +2,7 @@ import React from "react";
 import Road from "./road.js";
 import Number from "./number.js";
 import Settlement from "./settlement.js";
-import "../../Css/Board/hex.css";
+import "../../../../Css/Board/hex.css";
 
 class Hex extends React.Component {
   render() {
