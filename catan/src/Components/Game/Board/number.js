@@ -1,5 +1,5 @@
 import React from "react";
-import "../../../../Css/Board/number.css";
+import "../../../Css/Board/number.css";
 
 class Number extends React.Component {
   constructor(props) {

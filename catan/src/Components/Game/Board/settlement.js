@@ -1,5 +1,5 @@
 import React from "react";
-import "../../../../Css/Board/settlement.css";
+import "../../../Css/Board/settlement.css";
 
 class Settlement extends React.Component {
   render() {

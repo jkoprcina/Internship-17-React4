@@ -1,0 +1,8 @@
+.players-list {
+  padding: 50px;
+  background-color: gray;
+  margin: 40px;
+  position: left;
+  border-radius: 10px;
+  font-size: 21px;
+}

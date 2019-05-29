@@ -1,6 +1,6 @@
 import React from "react";
 import Hex from "./hex";
-import "../../../../Css/Board/board.css";
+import "../../../Css/Board/board.css";
 
 class Board extends React.Component {
   constructor(props) {
