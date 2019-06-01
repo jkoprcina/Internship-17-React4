@@ -1,17 +1,8 @@
 import React from "react";
 import "../../../Css/Board/number.css";
 
-class Number extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      value: null
-    };
-  }
-  render() {
-    return <div className="dice-index" />;
-  }
-}
+const Number = number => {
+  return <div className="dice-index">{this.props.number}</div>;
+};
 
 export default Number;

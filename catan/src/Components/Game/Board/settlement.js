@@ -1,10 +1,8 @@
 import React from "react";
 import "../../../Css/Board/settlement.css";
 
-class Settlement extends React.Component {
-  render() {
-    return <div className={"crossroad " + this.props.type} />;
-  }
-}
+const Settlement = (index, typeOfSettlement, isCity) => {
+  return <div className={"crossroad " + this.props.typeOfSettlement} />;
+};
 
 export default Settlement;

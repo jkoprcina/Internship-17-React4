@@ -1,31 +1,29 @@
-import React, { Component } from "react";
-import Player from "./player";
+import React from "react";
+import { loadPlayers } from "../../Redux/modules/player";
+import { connect } from "react-redux";
 import "../../Css/players.css";
 
-class Players extends Component {
-  constructor(props) {
-    super(props);
+const Players = players => {
+  return (
+    <div className="players-list">
+      {players.map((player, index) => (
+        <div key={index}>
+          {player.color} {player.score}
+        </div>
+      ))}
+    </div>
+  );
+};
 
-    this.state = {
-      players: [
-        { name: "red", score: 0 },
-        { name: "blue", score: 0 },
-        { name: "green", score: 0 },
-        { name: "yellow", score: 0 }
-      ]
-    };
-  }
-  componentDidMount() {}
-  render() {
-    const { players } = this.state;
-    return (
-      <div className="players-list">
-        {players.map((player, index) => (
-          <Player key={index} name={player.name} score={player.score} />
-        ))}
-      </div>
-    );
-  }
-}
+const mapStateToProps = state => ({
+  players: state.player.players
+});
 
-export default Players;
+const mapDispatchToProps = {
+  loadPlayers
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Players);
