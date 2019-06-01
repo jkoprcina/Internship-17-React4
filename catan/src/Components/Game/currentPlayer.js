@@ -1,23 +1,24 @@
 import React from "react";
+import { connect } from "react-redux";
+import { nextPlayer } from "../../Redux/modules/player";
 
-const CurrentPlayer = ({ player, NextPlayer }) => {
+const CurrentPlayer = ({ players, nextPlayer }) => {
   return (
     <div>
-      <span>{player.color}</span>
-      <span>{player.score}</span>
-      <span>{player.resources}</span>
-      <button onClick={NextPlayer}>Next</button>
+      <span>Red</span>
+      <span>0</span>
+      <span>0</span>
+      <button onClick={nextPlayer}>Next</button>
     </div>
   );
 };
 
 const mapStateToProps = state => ({
-  player: state.player.player
+  players: state.players.players
 });
 
 const mapDispatchToProps = {
-  loadPlayer,
-  NextPlayer
+  nextPlayer
 };
 
 export default connect(

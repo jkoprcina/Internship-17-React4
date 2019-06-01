@@ -1,63 +1,35 @@
 import React from "react";
 import Hex from "./hex";
+import { connect } from "react-redux";
+import {} from "../../../Redux/modules/board";
 import "../../../Css/Board/board.css";
 
 const Board = ({ hexes }) => {
   return (
     <div className="gameboard">
       <div className="field-row">
-        {hexes.map((hex, index) => {
-          if (index < 3) {
-            <Hex
-              index={hex.indexes[index]}
-              number={hex.numbers[index]}
-              color={hex.color[index]}
-            />;
-          }
+        {hexes.slice(0, 3).map((hex, index) => {
+          return <Hex key={hex.index} number={hex.number} color={hex.color} />;
         })}
       </div>
       <div className="field-row">
-        {hexes.map((hex, index) => {
-          if (index > 2 && index < 7) {
-            <Hex
-              index={hex.indexes[index]}
-              number={hex.numbers[index]}
-              color={hex.color[index]}
-            />;
-          }
+        {hexes.slice(3, 7).map((hex, index) => {
+          return <Hex key={hex.index} number={hex.number} color={hex.color} />;
         })}
       </div>
       <div className="field-row">
-        {hexes.map((hex, index) => {
-          if (index > 6 && index < 12) {
-            <Hex
-              index={hex.indexes[index]}
-              number={hex.numbers[index]}
-              color={hex.color[index]}
-            />;
-          }
+        {hexes.slice(7, 12).map((hex, index) => {
+          return <Hex key={hex.index} number={hex.number} color={hex.color} />;
         })}
       </div>
       <div className="field-row">
-        {hexes.map((hex, index) => {
-          if (index > 11 && index < 16) {
-            <Hex
-              index={hex.indexes[index]}
-              number={hex.numbers[index]}
-              color={hex.color[index]}
-            />;
-          }
+        {hexes.slice(12, 16).map((hex, index) => {
+          return <Hex key={hex.index} number={hex.number} color={hex.color} />;
         })}
       </div>
       <div className="field-row">
-        {hexes.map((hex, index) => {
-          if (index > 15) {
-            <Hex
-              index={hex.indexes[index]}
-              number={hex.numbers[index]}
-              color={hex.color[index]}
-            />;
-          }
+        {hexes.slice(16).map((hex, index) => {
+          return <Hex key={hex.index} number={hex.number} color={hex.color} />;
         })}
       </div>
     </div>
@@ -68,9 +40,7 @@ const mapStateToProps = state => ({
   hexes: state.board.hexes
 });
 
-const mapDispatchToProps = {
-  loadHexes
-};
+const mapDispatchToProps = {};
 
 export default connect(
   mapStateToProps,

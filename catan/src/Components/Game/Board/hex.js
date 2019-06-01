@@ -10,7 +10,7 @@ const Hex = (index, number, color) => {
       <div className="hex-top" />
       <div className="hex-middle" />
       <div className="hex-bottom" />
-      <Number value={this.props.number} />
+      <Number value={number} />
       <Settlement type="crossroad-top" />
       <Settlement type="crossroad-top-right" />
       <Settlement type="crossroad-top-left" />

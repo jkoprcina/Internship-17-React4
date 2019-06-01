@@ -86,7 +86,7 @@ function setColor(type) {
   }
 }
 (() => {
-  for (var i = 0; i < 20; i++) {
+  for (var i = 0; i < 19; i++) {
     initialState.hexes.push({
       index: i,
       color: setColor(types[i]),
