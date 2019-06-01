@@ -64,7 +64,7 @@ const initialState = {
 
 function setNumber(type, i) {
   if (type === "nothing") {
-    return null;
+    return 7;
   }
   return numbers[i];
 }

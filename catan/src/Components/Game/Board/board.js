@@ -9,6 +9,7 @@ const Board = ({ hexes }) => {
     <div className="gameboard">
       <div className="field-row">
         {hexes.slice(0, 3).map((hex, index) => {
+          console.log(hex.number);
           return <Hex key={hex.index} number={hex.number} color={hex.color} />;
         })}
       </div>
