@@ -24,3 +24,57 @@
   border-right: 52px solid transparent;
 }
 
+/*HARDCODED COLORS BECAUSE OF LACK OF KNOWING HOW TO DO IT DIFFERENTLY*/
+/* RED - BRICK*/
+.red-border-top {
+  border-bottom: 30px solid #cb4154;
+}
+.red-border-bottom {
+  border-top: 30px solid #cb4154;
+}
+.red-background {
+  background-color: #cb4154;
+}
+/* WHITE - WOOL*/
+.white-border-top {
+  border-bottom: 30px solid rgb(243, 241, 241);
+}
+.white-border-bottom {
+  border-top: 30px solid rgb(243, 241, 241);
+}
+.white-background {
+  background-color: rgb(243, 241, 241);
+}
+
+/* GRAY - ORE*/
+.gray-border-top {
+  border-bottom: 30px solid #808080;
+}
+.gray-border-bottom {
+  border-top: 30px solid #808080;
+}
+.gray-background {
+  background-color: #808080;
+}
+
+/* YELLOW - GRAIN*/
+.yellow-border-top {
+  border-bottom: 30px solid #f5deb3;
+}
+.yellow-border-bottom {
+  border-top: 30px solid #f5deb3;
+}
+.yellow-background {
+  background-color: #f5deb3;
+}
+
+/* BROWN - LUMBER*/
+.brown-border-top {
+  border-bottom: 30px solid #c19a6b;
+}
+.brown-border-bottom {
+  border-top: 30px solid #c19a6b;
+}
+.brown-background {
+  background-color: #c19a6b;
+}

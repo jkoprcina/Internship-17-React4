@@ -1,6 +1,9 @@
 import shuffle from "../../utils/shuffles";
 
 const LOAD_HEXES = "LOAD_HEXES";
+const CHANGE_ROAD_COLOR = "CHANGE_ROAD_COLOR";
+
+//SETTING UP INITIAL STATE AND THE START OF THE GAME
 const numbers = shuffle([
   1,
   2,
@@ -12,7 +15,7 @@ const numbers = shuffle([
   5,
   6,
   6,
-  7,
+  6,
   8,
   8,
   9,
@@ -46,20 +49,8 @@ const types = shuffle([
 
 const initialState = {
   hexes: [],
-  settlements: [
-    { index: 0, color: "black", isCity: false, neighbours: [] },
-    { index: 1, color: "black", isCity: false, neighbours: [] },
-    { index: 2, color: "black", isCity: false, neighbours: [] },
-    { index: 3, color: "black", isCity: false, neighbours: [] },
-    { index: 4, color: "black", isCity: false, neighbours: [] }
-  ],
-  roads: [
-    { index: 0, color: "black", neighbours: [] },
-    { index: 1, color: "black", neighbours: [] },
-    { index: 2, color: "black", neighbours: [] },
-    { index: 3, color: "black", neighbours: [] },
-    { index: 4, color: "black", neighbours: [] }
-  ]
+  settlements: [],
+  roads: []
 };
 
 function setNumber(type, i) {
@@ -85,19 +76,84 @@ function setColor(type) {
       return "black";
   }
 }
+
+const as = [3, 4, 5, 4, 3]; //Number of hexes in the row
+const bs = [0, 7, 16, 28, 39]; //Index of first settlement in the row
+const cs = [[3, 3, 4], [4, 4, 5], [5, 5, 5], [5, 4, 4], [4, 3, 3]]; //How much certain indexes move
+const settlementHexIndexes = [];
+
+//A very bad algorithm made by me so it's at least partially not hardcoded even though it is
+function settlementAlgorithm() {
+  for (var i = 0; i < 5; i++) {
+    for (var j = 0; j < as[i]; j++) {
+      const arrays = [];
+      arrays.push(bs[i] + j);
+      arrays.push(bs[i] + j + cs[i][0]);
+      arrays.push(bs[i] + j + cs[i][0] + 1);
+      arrays.push(bs[i] + j + cs[i][0] + cs[i][1] + 1);
+      arrays.push(bs[i] + j + cs[i][0] + cs[i][1] + 2);
+      arrays.push(bs[i] + j + cs[i][0] + cs[i][1] + cs[i][2] + 2);
+      settlementHexIndexes.push(arrays);
+    }
+  }
+}
+
+const ar = [3, 4, 5, 4, 3];
+const br = [0, 10, 23, 40, 54];
+const cr = [[5, 4], [7, 5], [9, 5], [7, 4], [6, 3]];
+const roadsHexIndexes = [];
+
+function roadsAlgorithm() {
+  for (var i = 0; i < 5; i++) {
+    for (var j = 0; j < ar[i]; j++) {
+      const arrayr = [];
+      arrayr.push(br[i] + j * 2);
+      arrayr.push(br[i] + j * 2 + 1);
+      arrayr.push(br[i] + j + cr[i][0] + 1);
+      arrayr.push(br[i] + j + cr[i][0] + 2);
+      arrayr.push(br[i] + j * 2 + cr[i][0] + cr[i][1] + 2);
+      arrayr.push(br[i] + j * 2 + cr[i][0] + cr[i][1] + 3);
+      roadsHexIndexes.push(arrayr);
+    }
+  }
+}
+
 (() => {
+  settlementAlgorithm();
+  roadsAlgorithm();
   for (var i = 0; i < 19; i++) {
     initialState.hexes.push({
       index: i,
       color: setColor(types[i]),
-      number: setNumber(types[i], i)
+      number: setNumber(types[i], i),
+      neighbouringSettlements: settlementHexIndexes[i],
+      neighbouringRoads: roadsHexIndexes[i]
     });
+  }
+  for (var j = 0; j < 54; j++) {
+    initialState.settlements.push({ index: j, color: "black", isCity: false });
+  }
+  for (var k = 0; k < 71; k++) {
+    initialState.roads.push({ index: k, color: "black" });
   }
 })();
 
 export const loadHexes = () => dispatch => {
   dispatch({
     type: LOAD_HEXES
+  });
+};
+
+export const changeColor = (player, index) => (dispatch, getState) => {
+  const state = getState();
+  for (var road in state.roads) {
+    console.log(road);
+    if (road.index === index) {
+      road.color = player.color;
+    }
+  }
+  dispatch({
+    type: CHANGE_ROAD_COLOR
   });
 };
 

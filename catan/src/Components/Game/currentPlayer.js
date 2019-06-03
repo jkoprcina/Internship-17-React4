@@ -3,19 +3,31 @@ import { connect } from "react-redux";
 import { nextPlayer } from "../../Redux/modules/player";
 import "../../Css/players.css";
 
-const CurrentPlayer = ({ players, nextPlayer }) => {
+const CurrentPlayer = ({ nextPlayer, players, turn, loadPlayer }) => {
+  const player = players[0];
+  for (var p in players) {
+    if (p.index === turn % 4) {
+      player = p;
+    }
+  }
   return (
     <div className="players-list">
-      <p>Is playing: Red</p>
-      <p>Score: 0</p>
-      <p>Resources: 0</p>
+      <p>Is playing: {player.color}</p>
+      <p>Score: {player.score}</p>
+      <p>Resources: </p>
+      <p>brick: {player.resources.brick}</p>
+      <p>wool: {player.resources.wool}</p>
+      <p>lumber: {player.resources.lumber}</p>
+      <p>ore: {player.resources.ore}</p>
+      <p>wheat: {player.resources.wheat}</p>
       <button onClick={nextPlayer}>Next</button>
     </div>
   );
 };
 
 const mapStateToProps = state => ({
-  players: state.players.players
+  players: state.players.players,
+  turn: state.players.currentPlay
 });
 
 const mapDispatchToProps = {

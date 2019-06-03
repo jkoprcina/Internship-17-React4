@@ -9,28 +9,67 @@ const Board = ({ hexes }) => {
     <div className="gameboard">
       <div className="field-row">
         {hexes.slice(0, 3).map((hex, index) => {
-          console.log(hex.number);
-          return <Hex key={hex.index} number={hex.number} color={hex.color} />;
+          return (
+            <Hex
+              key={hex.index}
+              number={hex.number}
+              color={hex.color}
+              settlementIndexes={hex.neighbouringSettlements}
+              roadIndexes={hex.neighbouringRoads}
+            />
+          );
         })}
       </div>
       <div className="field-row">
         {hexes.slice(3, 7).map((hex, index) => {
-          return <Hex key={hex.index} number={hex.number} color={hex.color} />;
+          return (
+            <Hex
+              key={hex.index}
+              number={hex.number}
+              color={hex.color}
+              settlementIndexes={hex.neighbouringSettlements}
+              roadIndexes={hex.neighbouringRoads}
+            />
+          );
         })}
       </div>
       <div className="field-row">
         {hexes.slice(7, 12).map((hex, index) => {
-          return <Hex key={hex.index} number={hex.number} color={hex.color} />;
+          return (
+            <Hex
+              key={hex.index}
+              number={hex.number}
+              color={hex.color}
+              settlementIndexes={hex.neighbouringSettlements}
+              roadIndexes={hex.neighbouringRoads}
+            />
+          );
         })}
       </div>
       <div className="field-row">
         {hexes.slice(12, 16).map((hex, index) => {
-          return <Hex key={hex.index} number={hex.number} color={hex.color} />;
+          return (
+            <Hex
+              key={hex.index}
+              number={hex.number}
+              color={hex.color}
+              settlementIndexes={hex.neighbouringSettlements}
+              roadIndexes={hex.neighbouringRoads}
+            />
+          );
         })}
       </div>
       <div className="field-row">
         {hexes.slice(16).map((hex, index) => {
-          return <Hex key={hex.index} number={hex.number} color={hex.color} />;
+          return (
+            <Hex
+              key={hex.index}
+              number={hex.number}
+              color={hex.color}
+              settlementIndexes={hex.neighbouringSettlements}
+              roadIndexes={hex.neighbouringRoads}
+            />
+          );
         })}
       </div>
     </div>

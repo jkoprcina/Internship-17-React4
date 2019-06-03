@@ -3,6 +3,11 @@
   height: 6px;
   position: absolute;
   background-color: darkgray;
+  z-index: 2;
+}
+
+.road:hover {
+  cursor: pointer;
 }
 .road-top-right {
   top: 12px;
@@ -33,4 +38,20 @@
 .road-bottom-left {
   bottom: 12px;
   transform: rotate(30deg);
+}
+
+.red {
+  background-color: red;
+}
+
+.green {
+  background-color: green;
+}
+
+.yellow {
+  background-color: yellow;
+}
+
+.blue {
+  background-color: blue;
 }
