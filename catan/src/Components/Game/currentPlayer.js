@@ -4,7 +4,7 @@ import { nextPlayer } from "../../Redux/modules/player";
 import "../../Css/players.css";
 
 const CurrentPlayer = ({ nextPlayer, players, turn, loadPlayer }) => {
-  const player = players[0];
+  let player = players[0];
   for (var p in players) {
     if (p.index === turn % 4) {
       player = p;

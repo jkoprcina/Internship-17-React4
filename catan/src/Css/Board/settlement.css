@@ -6,6 +6,10 @@
   z-index: 3;
   border-radius: 50%;
 }
+
+.crossroad:hover {
+  cursor: pointer;
+}
 .crossroad-top {
   top: 0;
   left: 50%;
@@ -35,4 +39,20 @@
   bottom: 30px;
   right: 0;
   transform: translate(10px, 10px);
+}
+
+.red {
+  background-color: red;
+}
+
+.green {
+  background-color: green;
+}
+
+.yellow {
+  background-color: yellow;
+}
+
+.blue {
+  background-color: blue;
 }

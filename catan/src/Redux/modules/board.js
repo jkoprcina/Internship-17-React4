@@ -2,6 +2,9 @@ import shuffle from "../../utils/shuffles";
 
 const LOAD_HEXES = "LOAD_HEXES";
 const CHANGE_ROAD_COLOR = "CHANGE_ROAD_COLOR";
+const CHANGE_SETTLEMENT_COLOR = "CHANGE_SETTLEMENT_COLOR";
+const GET_SETTLEMENT_COLOR = "GET_SETTLEMENT_COLOR";
+const GET_ROAD_COLOR = "GET_ROAD_COLOR";
 
 //SETTING UP INITIAL STATE AND THE START OF THE GAME
 const numbers = shuffle([
@@ -144,17 +147,32 @@ export const loadHexes = () => dispatch => {
   });
 };
 
-export const changeColor = (player, index) => (dispatch, getState) => {
-  const state = getState();
-  for (var road in state.roads) {
-    console.log(road);
-    if (road.index === index) {
-      road.color = player.color;
-    }
-  }
-  dispatch({
-    type: CHANGE_ROAD_COLOR
-  });
+export const changeRoadColor = (number, player) => {
+  return {
+    type: CHANGE_ROAD_COLOR,
+    payload: { number, player }
+  };
+};
+
+export const changeSettlementColor = (number, player) => {
+  return {
+    type: CHANGE_SETTLEMENT_COLOR,
+    payload: { number, player }
+  };
+};
+
+export const getSettlementColor = (number, player) => {
+  return {
+    type: GET_SETTLEMENT_COLOR,
+    payload: { number, player }
+  };
+};
+
+export const getRoadColor = (number, player) => {
+  return {
+    type: GET_ROAD_COLOR,
+    payload: { number, player }
+  };
 };
 
 const reducer = (state = initialState, action) => {
@@ -163,6 +181,32 @@ const reducer = (state = initialState, action) => {
       return {
         ...state.hexes
       };
+    case CHANGE_ROAD_COLOR:
+      let roads = [...state.roads];
+      const newRoad = {
+        ...roads[action.payload.number],
+        color: action.payload.player.color
+      };
+      roads[action.payload.number] = newRoad;
+      return {
+        ...state,
+        roads
+      };
+    case CHANGE_SETTLEMENT_COLOR:
+      let settlements = [...state.settlements];
+      const newSettlement = {
+        ...settlements[action.payload.number],
+        color: action.payload.player.color
+      };
+      settlements[action.payload.number] = newSettlement;
+      return {
+        ...state,
+        settlements
+      };
+    case GET_ROAD_COLOR:
+      return state;
+    case GET_SETTLEMENT_COLOR:
+      return state;
     default:
       return state;
   }

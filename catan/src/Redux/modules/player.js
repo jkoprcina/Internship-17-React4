@@ -1,7 +1,7 @@
 import shuffle from "../../utils/shuffles";
 
 const LOAD_PLAYERS = "LOAD_PLAYERS";
-const LOAD_PLAYER = "LOAD_PLAYER";
+const GET_CURRENT_PLAYER = "GET_CURRENT_PLAYER";
 const NEXT_PLAYER = "NEXT_PLAYERS";
 
 const players = ["red", "blue", "green", "yellow"];
@@ -39,10 +39,10 @@ export const nextPlayer = () => {
   };
 };
 
-export const loadPlayer = () => dispatch => {
-  dispatch({
-    type: LOAD_PLAYER
-  });
+export const getCurrentPlayer = () => {
+  return {
+    type: GET_CURRENT_PLAYER
+  };
 };
 
 const reducer = (state = initialState, action) => {
@@ -51,11 +51,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state
       };
-    case LOAD_PLAYER:
+    case GET_CURRENT_PLAYER:
       const player = state.players.find(
         player => player.Index === state.currentPlay % 4
       );
-      return { ...player };
+      return player;
     default:
       return state;
   }
