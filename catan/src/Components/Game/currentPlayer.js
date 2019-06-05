@@ -17,7 +17,6 @@ const CurrentPlayer = ({
   function handleNextPlayerClick(player, turn, settlements) {
     nextPlayer(player);
     let result = rollTheDices();
-    console.log(result);
     let arrayWithPossibleDuplicates = [];
     //Get all settlements around the hex that has the value which the dices dropped on together
     hexes.forEach((hex, index) => {
@@ -30,10 +29,8 @@ const CurrentPlayer = ({
         });
       }
     });
-    console.log(arrayWithPossibleDuplicates);
     //Sorting the settlements so that we have no duplicates
     let arrayWithoutDuplicates = [...new Set(arrayWithPossibleDuplicates)];
-    console.log(arrayWithoutDuplicates);
     let settlementsWithOwners = [];
     //Looking for the owners of those settlements, grabing their color for easier input
     arrayWithoutDuplicates.forEach((settlement, index) => {
@@ -44,7 +41,7 @@ const CurrentPlayer = ({
     });
     addResources(settlementsWithOwners);
   }
-  if (turn > 9) {
+  if (turn < 9) {
     return (
       <div className="players-list">
         <p>
@@ -63,11 +60,7 @@ const CurrentPlayer = ({
             Next
           </button>
         ) : (
-          <button
-            onClick={() => handleNextPlayerClick(player, turn, settlements)}
-          >
-            Next
-          </button>
+          <></>
         )}
       </div>
     );

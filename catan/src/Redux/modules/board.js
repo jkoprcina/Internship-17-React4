@@ -168,6 +168,8 @@ const reducer = (state = initialState, action) => {
         ...roads[action.payload.number],
         color: action.payload.player.color
       };
+      console.log(roads[action.payload.number]);
+      console.log(action.payload.number);
       roads[action.payload.number] = newRoad;
       return {
         ...state,
@@ -179,6 +181,8 @@ const reducer = (state = initialState, action) => {
         ...settlements[action.payload.number],
         color: action.payload.player.color
       };
+      console.log(settlements[action.payload.number]);
+      console.log(action.payload.number);
       settlements[action.payload.number] = newSettlement;
       return {
         ...state,

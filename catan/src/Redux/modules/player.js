@@ -7,7 +7,11 @@ const ADD_RESOURCES = "ADD_RESOURCES";
 
 const players = shuffle(["red", "blue", "green", "yellow"]);
 let newPlayer, newPlayers, newTurn;
-
+const costs = {
+  road: { brick: 1, lumber: 1 },
+  settlement: { brick: 1, lumber: 1, grain: 1, wool: 1 },
+  city: { grain: 2, ore: 3 }
+};
 const initialState = {
   players: [],
   turn: 1
@@ -26,7 +30,13 @@ const initialState = {
 })();
 
 //METHODS THAT MAKE THE GAME FUNCTION
-
+export const checkResources = (player, type) => {
+  switch (type) {
+    case "road":
+    case "settlement":
+    case "city":
+  }
+};
 export const nextPlayer = player => {
   return {
     type: NEXT_PLAYER,

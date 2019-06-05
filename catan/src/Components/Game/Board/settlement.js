@@ -15,7 +15,13 @@ const Settlement = ({
   const color = settlements[index].color;
   function handleChangeSettlementColorClick(index, player, color) {
     if (color === "black" && player.leftToPlace.settlement !== 0) {
-      changeSettlementColor(index, player, color);
+      if (turn > 8) {
+        if (!checkResources("settlement")) {
+          return <p>You don't have enough resources</p>;
+        }
+        removeResources(player, "road");
+      }
+      changeRoadColor(index, player, color);
     }
   }
   return (
