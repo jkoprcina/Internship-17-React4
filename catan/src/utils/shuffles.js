@@ -9,4 +9,4 @@ function shuffle(arr) {
   return arr;
 }
 
-export default shuffle; 
+export default shuffle;

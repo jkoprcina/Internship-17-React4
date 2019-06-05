@@ -1,13 +1,12 @@
 import shuffle from "../../utils/shuffles";
-import { roadPlaced } from "./player";
+import { roadPlaced, settlementPlaced } from "./player";
 
-const LOAD_HEXES = "LOAD_HEXES";
 const CHANGE_ROAD_COLOR = "CHANGE_ROAD_COLOR";
 const CHANGE_SETTLEMENT_COLOR = "CHANGE_SETTLEMENT_COLOR";
 
 //SETTING UP INITIAL STATE AND THE START OF THE GAME
 const numbers = shuffle([
-  1,
+  2,
   2,
   3,
   3,
@@ -128,6 +127,7 @@ function roadsAlgorithm() {
       index: i,
       color: setColor(types[i]),
       number: setNumber(types[i], i),
+      type: types[i],
       neighbouringSettlements: settlementHexIndexes[i],
       neighbouringRoads: roadsHexIndexes[i]
     });
@@ -140,37 +140,28 @@ function roadsAlgorithm() {
   }
 })();
 
-export const loadHexes = () => dispatch => {
+export const changeRoadColor = (number, player, currentColor) => dispatch => {
   dispatch({
-    type: LOAD_HEXES
+    type: CHANGE_ROAD_COLOR,
+    payload: { number, player, currentColor }
   });
+  dispatch(roadPlaced(player));
 };
 
-export const changeRoadColor = (number, player, color) => dispatch => {
-  if (color === "black" && player.leftToPlace.road !== 0) {
-    dispatch({
-      type: CHANGE_ROAD_COLOR,
-      payload: { number, player, color }
-    });
-    dispatch(roadPlaced(player));
-  }
-};
-
-export const changeSettlementColor = (number, player, color) => {
-  if (color === "black") {
-    return {
-      type: CHANGE_SETTLEMENT_COLOR,
-      payload: { number, player, color }
-    };
-  }
+export const changeSettlementColor = (
+  number,
+  player,
+  currentColor
+) => dispatch => {
+  dispatch({
+    type: CHANGE_SETTLEMENT_COLOR,
+    payload: { number, player, currentColor }
+  });
+  dispatch(settlementPlaced(player));
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case LOAD_HEXES:
-      return {
-        ...state.hexes
-      };
     case CHANGE_ROAD_COLOR:
       let roads = [...state.roads];
       const newRoad = {

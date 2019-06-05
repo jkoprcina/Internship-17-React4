@@ -6,10 +6,15 @@ import "../../../Css/Board/road.css";
 
 const Road = ({ index, type, changeRoadColor, roads, player }) => {
   const color = roads[index].color;
+  function handleChangeRoadColorClick(index, player, color) {
+    if (color === "black" && player.leftToPlace.road !== 0) {
+      changeRoadColor(index, player, color);
+    }
+  }
   return (
     <div
       className={"road " + type + " " + color}
-      onClick={() => changeRoadColor(index, player, color)}
+      onClick={() => handleChangeRoadColorClick(index, player, color)}
     />
   );
 };

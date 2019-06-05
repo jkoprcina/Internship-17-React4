@@ -13,10 +13,15 @@ const Settlement = ({
   settlements
 }) => {
   const color = settlements[index].color;
+  function handleChangeSettlementColorClick(index, player, color) {
+    if (color === "black" && player.leftToPlace.settlement !== 0) {
+      changeSettlementColor(index, player, color);
+    }
+  }
   return (
     <div
       className={"crossroad " + type + " " + color}
-      onClick={() => changeSettlementColor(index, player, color)}
+      onClick={() => handleChangeSettlementColorClick(index, player, color)}
     />
   );
 };

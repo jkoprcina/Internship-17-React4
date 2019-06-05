@@ -1,10 +1,12 @@
 import shuffle from "../../utils/shuffles";
 
-const LOAD_PLAYERS = "LOAD_PLAYERS";
 const NEXT_PLAYER = "NEXT_PLAYERS";
 const ROAD_PLACED = "ROAD_PLACED";
+const SETTLEMENT_PLACED = "SETTLEMENT_PLACED";
+const ADD_RESOURCES = "ADD_RESOURCES";
 
-const players = ["red", "blue", "green", "yellow"];
+const players = shuffle(["red", "blue", "green", "yellow"]);
+let newPlayer, newPlayers, newTurn;
 
 const initialState = {
   players: [],
@@ -12,30 +14,23 @@ const initialState = {
 };
 
 (() => {
-  const orderOfPlaying = shuffle(players);
   for (var i = 0; i < 4; i++) {
     initialState.players.push({
       index: i,
-      color: orderOfPlaying[i],
+      color: players[i],
       score: 0,
       resources: { brick: 0, ore: 0, wool: 0, grain: 0, lumber: 0 },
       leftToPlace: { settlement: 2, road: 2 }
     });
   }
-  initialState.orderOfPlaying = orderOfPlaying;
 })();
 
 //METHODS THAT MAKE THE GAME FUNCTION
-export const loadPlayers = () => {
-  return {
-    type: LOAD_PLAYERS
-  };
-};
 
-export const nextPlayer = () => {
-  initialState.turn++;
+export const nextPlayer = player => {
   return {
-    type: NEXT_PLAYER
+    type: NEXT_PLAYER,
+    payload: player
   };
 };
 
@@ -45,25 +40,68 @@ export const roadPlaced = player => {
     payload: player
   };
 };
+
+export const settlementPlaced = player => {
+  return {
+    type: SETTLEMENT_PLACED,
+    payload: player
+  };
+};
+
+export const addResources = settlements => {
+  return {
+    type: ADD_RESOURCES,
+    payload: settlements
+  };
+};
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case LOAD_PLAYERS:
-      return {
-        ...state
-      };
     case NEXT_PLAYER:
-      let newPlayerArray = state.players.slice(1, 4);
-      newPlayerArray.push(state.players[0]);
+      newPlayers = state.players.slice(1, 4);
+      newPlayers.push(state.players[0]);
+      newTurn = state.turn++;
+      if (state.turn < 9) {
+        newPlayers[3].leftToPlace.road = 2;
+        newPlayers[3].leftToPlace.settlement = 2;
+      }
       return {
         ...state,
-        players: newPlayerArray
+        players: newPlayers,
+        turn: newTurn
       };
     case ROAD_PLACED:
-      let newPlayer = action.payload.player;
+      newPlayer = action.payload;
       newPlayer.leftToPlace.road--;
-      return { ...state.players, player: newPlayer };
+      newPlayers = state.players;
+      newPlayers[0] = newPlayer;
+      return {
+        ...state,
+        players: newPlayers
+      };
+    case SETTLEMENT_PLACED:
+      newPlayer = action.payload;
+      newPlayer.leftToPlace.settlement--;
+      newPlayers = state.players;
+      newPlayers[0] = newPlayer;
+      return {
+        ...state,
+        players: newPlayers
+      };
+    case ADD_RESOURCES:
+      newPlayers = state.players;
+      action.payload.forEach((settlement, index) => {
+        newPlayers.forEach((player, j) => {
+          if (player.color === settlement.color) {
+            player.resources[settlement.type]++;
+          }
+        });
+      });
+      return {
+        ...state,
+        players: newPlayers
+      };
     default:
-      return { state };
+      return { ...state };
   }
 };
 
