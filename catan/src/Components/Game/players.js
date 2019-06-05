@@ -7,8 +7,8 @@ const Players = ({ players }) => {
   return (
     <div className="players-list">
       {players.map((player, index) => (
-        <div key={index}>
-          {player.color} {player.score}
+        <div className="player" key={index}>
+          {player.color}: {player.score}
         </div>
       ))}
     </div>

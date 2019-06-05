@@ -1,8 +1,17 @@
 .players-list {
-  padding: 30px;
+  padding: 20px;
   background-color: rgb(240, 240, 240);
   margin: 40px;
   position: left;
   border-radius: 10px;
   font-size: 21px;
+}
+
+.player {
+  margin: 8px;
+  font-weight: 600;
+}
+
+.resources {
+  margin-left: 40px;
 }

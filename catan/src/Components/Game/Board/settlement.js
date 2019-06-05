@@ -1,29 +1,33 @@
 import React from "react";
 import { connect } from "react-redux";
-import { getCurrentPlayer } from "../../../Redux/modules/player";
-import {
-  changeSettlementColor,
-  getSettlementColor
-} from "../../../Redux/modules/board";
+import {} from "../../../Redux/modules/player";
+import { changeSettlementColor } from "../../../Redux/modules/board";
 import "../../../Css/Board/settlement.css";
 
-const Settlement = ({ index, type, isCity, changeSettlementColor }) => {
-  const player = getCurrentPlayer();
-  const color = getSettlementColor(index);
+const Settlement = ({
+  index,
+  type,
+  isCity,
+  changeSettlementColor,
+  player,
+  settlements
+}) => {
+  const color = settlements[index].color;
   return (
     <div
-      className={"crossroad " + type}
-      onClick={() => changeSettlementColor(index, player)}
+      className={"crossroad " + type + " " + color}
+      onClick={() => changeSettlementColor(index, player, color)}
     />
   );
 };
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  player: state.players.players[0],
+  settlements: state.board.settlements
+});
 
 const mapDispatchToProps = {
-  changeSettlementColor,
-  getSettlementColor,
-  getCurrentPlayer
+  changeSettlementColor
 };
 
 export default connect(
