@@ -1,5 +1,9 @@
-///Current component se ne rerendera
-///Turn se ne povecava
+///Current component se ne rerendera, tj samo ceste se ne renderaju, weird
+//Onclick za ceste ne radi kad dode dio s kupovinom ( radi za settlemente)
+//NEED TO ADD NEXT
+//Score se triba povecavat
+//Settlementi se tribaju moc pretvorit u gradove 
+//Fix the above two bugs and then add the lower two, plus victory at 10 points
 import React from "react";
 import { connect } from "react-redux";
 import { nextPlayer, addResources } from "../../Redux/modules/player";
@@ -14,7 +18,7 @@ const CurrentPlayer = ({
   settlements,
   addResources
 }) => {
-  function handleNextPlayerClick(player, turn, settlements) {
+  function handleNextPlayerClick(player, settlements) {
     nextPlayer(player);
     let result = rollTheDices();
     let arrayWithPossibleDuplicates = [];
@@ -41,7 +45,7 @@ const CurrentPlayer = ({
     });
     addResources(settlementsWithOwners);
   }
-  if (turn < 9) {
+  if (turn < 2) {
     return (
       <div className="players-list">
         <p>
@@ -54,9 +58,7 @@ const CurrentPlayer = ({
         <p>Your settlement must be placed adjacent to one of your roads</p>
         {player.leftToPlace.road === 0 &&
         player.leftToPlace.settlement === 0 ? (
-          <button
-            onClick={() => handleNextPlayerClick(player, turn, settlements)}
-          >
+          <button onClick={() => handleNextPlayerClick(player, settlements)}>
             Next
           </button>
         ) : (
@@ -78,9 +80,7 @@ const CurrentPlayer = ({
         <p className="resources">lumber: {player.resources.lumber}</p>
         <p className="resources">ore: {player.resources.ore}</p>
         <p className="resources">grain: {player.resources.grain}</p>
-        <button
-          onClick={() => handleNextPlayerClick(player, turn, settlements)}
-        >
+        <button onClick={() => handleNextPlayerClick(player, settlements)}>
           Next
         </button>
       </div>

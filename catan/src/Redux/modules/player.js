@@ -1,17 +1,15 @@
 import shuffle from "../../utils/shuffles";
+import { COSTS } from "../../utils/checkResources";
 
 const NEXT_PLAYER = "NEXT_PLAYERS";
 const ROAD_PLACED = "ROAD_PLACED";
 const SETTLEMENT_PLACED = "SETTLEMENT_PLACED";
 const ADD_RESOURCES = "ADD_RESOURCES";
+const REMOVE_RESOURCES = "REMOVE_RESOURCES";
 
 const players = shuffle(["red", "blue", "green", "yellow"]);
 let newPlayer, newPlayers, newTurn;
-const costs = {
-  road: { brick: 1, lumber: 1 },
-  settlement: { brick: 1, lumber: 1, grain: 1, wool: 1 },
-  city: { grain: 2, ore: 3 }
-};
+
 const initialState = {
   players: [],
   turn: 1
@@ -30,13 +28,13 @@ const initialState = {
 })();
 
 //METHODS THAT MAKE THE GAME FUNCTION
-export const checkResources = (player, type) => {
-  switch (type) {
-    case "road":
-    case "settlement":
-    case "city":
-  }
+export const removeResources = (player, type) => {
+  return {
+    type: REMOVE_RESOURCES,
+    payload: { player, type }
+  };
 };
+
 export const nextPlayer = player => {
   return {
     type: NEXT_PLAYER,
@@ -69,7 +67,8 @@ const reducer = (state = initialState, action) => {
     case NEXT_PLAYER:
       newPlayers = state.players.slice(1, 4);
       newPlayers.push(state.players[0]);
-      newTurn = state.turn++;
+      newTurn = state.turn;
+      newTurn = newTurn + 1;
       if (state.turn < 9) {
         newPlayers[3].leftToPlace.road = 2;
         newPlayers[3].leftToPlace.settlement = 2;
@@ -109,6 +108,32 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         players: newPlayers
+      };
+    case REMOVE_RESOURCES:
+      let player = action.payload.player;
+      switch (action.payload.type) {
+        case "road":
+          player.resources.brick = player.resources.brick - COSTS.road.brick;
+          player.resources.lumber = player.resources.lumber - COSTS.road.lumber;
+          break;
+        case "settlement":
+          player.resources.brick = player.resources.brick - COSTS.road.brick;
+          player.resources.lumber = player.resources.lumber - COSTS.road.lumber;
+          player.resources.grain = player.resources.grain - COSTS.road.grain;
+          player.resources.wool = player.resources.wool - COSTS.road.wool;
+          break;
+        case "city":
+          player.resources.grain = player.resources.grain - COSTS.road.grain;
+          player.resources.ore = player.resources.ore - COSTS.road.ore;
+          break;
+        default:
+          break;
+      }
+      newPlayers = state.players;
+      newPlayers[0] = action.payload.player;
+      return {
+        ...state,
+        newPlayers
       };
     default:
       return { ...state };
