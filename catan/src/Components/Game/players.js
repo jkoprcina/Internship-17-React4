@@ -1,19 +1,33 @@
 import React from "react";
-import {} from "../../Redux/modules/player";
 import { connect } from "react-redux";
+import store from "../../Redux/store";
 import "../../Css/players.css";
 
-const Players = ({ players }) => {
-  return (
-    <div className="players-list">
-      {players.map((player, index) => (
-        <div className="player" key={index}>
-          {player.color}: {player.score}
-        </div>
-      ))}
-    </div>
-  );
-};
+class Players extends React.Component {
+  updateStateFromStore = () => {
+    const currentState = this.props.players;
+    if (this.state !== currentState) {
+      this.setState(currentState);
+    }
+  };
+  componentDidMount() {
+    this.unsubscribeStore = store.subscribe(this.updateStateFromStore);
+  }
+  componentWillUnmount() {
+    this.unsubscribeStore();
+  }
+  render() {
+    return (
+      <div className="players-list">
+        {this.props.players.map((player, index) => (
+          <div className="player" key={index}>
+            {player.color} {player.name}: {player.score}
+          </div>
+        ))}
+      </div>
+    );
+  }
+}
 
 const mapStateToProps = state => ({
   players: state.players.players

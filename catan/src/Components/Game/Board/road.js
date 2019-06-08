@@ -1,43 +1,59 @@
 import React from "react";
 import { connect } from "react-redux";
+import store from "../../../Redux/store";
 import { removeResources } from "../../../Redux/modules/player";
 import { changeRoadColor } from "../../../Redux/modules/board";
-import {checkResources} from "../../../utils/checkResources";
+import { COSTS } from "../../../utils/checkResources";
 import "../../../Css/Board/road.css";
 
-const Road = ({
-  index,
-  type,
-  roads,
-  player,
-  turn,
-  changeRoadColor,
-  checkResources,
-  removeResources
-}) => {
-  const color = roads[index].color;
-  function handleChangeRoadColorClick(index, player, color) {
-    if (turn < 2) {
+class Road extends React.Component {
+  updateStateFromStore = () => {
+    const currentState = this.props.players;
+    if (this.state !== currentState) {
+      this.setState(currentState);
+    }
+  };
+  componentDidMount() {
+    this.unsubscribeStore = store.subscribe(this.updateStateFromStore);
+  }
+  componentWillUnmount() {
+    this.unsubscribeStore();
+  }
+  handleChangeRoadColorClick = (index, player, color) => {
+    if (this.props.turn < 9) {
       if (color === "black" && player.leftToPlace.road !== 0) {
-        changeRoadColor(index, player, color);
-        return;
+        this.props.changeRoadColor(index, player, color);
       }
     } else {
-      console.log("here");
-      if (!checkResources(player, "road")) {
-        return <p>You don't have enough resources</p>;
+      if (
+        player.resources.brick >= COSTS.road.brick &&
+        player.resources.lumber >= COSTS.road.lumber
+      ) {
+        this.props.removeResources(this.props.player, "road");
+        this.props.changeRoadColor(this.props.index, this.props.player, color);
       }
-      removeResources(player, "road");
-      changeRoadColor(index, player, color);
     }
+  };
+  render() {
+    return (
+      <div
+        className={
+          "road " +
+          this.props.type +
+          " " +
+          this.props.roads[this.props.index].color
+        }
+        onClick={() =>
+          this.handleChangeRoadColorClick(
+            this.props.index,
+            this.props.player,
+            this.props.roads[this.props.index].color
+          )
+        }
+      />
+    );
   }
-  return (
-    <div
-      className={"road " + type + " " + color}
-      onClick={() => handleChangeRoadColorClick(index, player, color)}
-    />
-  );
-};
+}
 
 const mapStateToProps = state => ({
   player: state.players.players[0],
@@ -47,7 +63,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   changeRoadColor,
-  checkResources,
   removeResources
 };
 

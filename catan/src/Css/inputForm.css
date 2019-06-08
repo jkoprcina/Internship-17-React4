@@ -1,0 +1,15 @@
+.form {
+  margin: auto;
+  width: 60%;
+  text-align: center;
+}
+
+.input {
+  margin: 5px;
+}
+
+.button {
+  margin: 5px;
+  border-radius: 5px;
+  width: 50px;
+}

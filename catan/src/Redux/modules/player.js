@@ -6,9 +6,10 @@ const ROAD_PLACED = "ROAD_PLACED";
 const SETTLEMENT_PLACED = "SETTLEMENT_PLACED";
 const ADD_RESOURCES = "ADD_RESOURCES";
 const REMOVE_RESOURCES = "REMOVE_RESOURCES";
+const ENTER_NAMES = "ENTER_NAMES";
 
-const players = shuffle(["red", "blue", "green", "yellow"]);
-let newPlayer, newPlayers, newTurn;
+const playersList = shuffle(["red", "blue", "green", "yellow"]);
+let newPlayer, players, turn;
 
 const initialState = {
   players: [],
@@ -19,7 +20,7 @@ const initialState = {
   for (var i = 0; i < 4; i++) {
     initialState.players.push({
       index: i,
-      color: players[i],
+      color: playersList[i],
       score: 0,
       resources: { brick: 0, ore: 0, wool: 0, grain: 0, lumber: 0 },
       leftToPlace: { settlement: 2, road: 2 }
@@ -28,6 +29,12 @@ const initialState = {
 })();
 
 //METHODS THAT MAKE THE GAME FUNCTION
+export const enterNames = names => {
+  return {
+    type: ENTER_NAMES,
+    payload: names
+  };
+};
 export const removeResources = (player, type) => {
   return {
     type: REMOVE_RESOURCES,
@@ -64,76 +71,99 @@ export const addResources = settlements => {
 };
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case ENTER_NAMES:
+      players = state.players;
+      players.forEach((player, index) => {
+        player.name = action.payload[index];
+      });
+      return {
+        ...state,
+        players
+      };
     case NEXT_PLAYER:
-      newPlayers = state.players.slice(1, 4);
-      newPlayers.push(state.players[0]);
-      newTurn = state.turn;
-      newTurn = newTurn + 1;
+      players = state.players.slice(1, 4);
+      players.push(state.players[0]);
+      turn = state.turn;
+      turn = turn + 1;
       if (state.turn < 9) {
-        newPlayers[3].leftToPlace.road = 2;
-        newPlayers[3].leftToPlace.settlement = 2;
+        players[3].leftToPlace.road = 2;
+        players[3].leftToPlace.settlement = 2;
       }
       return {
         ...state,
-        players: newPlayers,
-        turn: newTurn
+        players,
+        turn
       };
     case ROAD_PLACED:
       newPlayer = action.payload;
       newPlayer.leftToPlace.road--;
-      newPlayers = state.players;
-      newPlayers[0] = newPlayer;
+      players = state.players;
+      players[0] = newPlayer;
       return {
         ...state,
-        players: newPlayers
+        players
       };
     case SETTLEMENT_PLACED:
       newPlayer = action.payload;
       newPlayer.leftToPlace.settlement--;
-      newPlayers = state.players;
-      newPlayers[0] = newPlayer;
+      newPlayer.score++;
+      players = state.players;
+      players[0] = newPlayer;
       return {
         ...state,
-        players: newPlayers
+        players
       };
     case ADD_RESOURCES:
-      newPlayers = state.players;
+      players = state.players;
       action.payload.forEach((settlement, index) => {
-        newPlayers.forEach((player, j) => {
-          if (player.color === settlement.color) {
+        players.forEach((player, j) => {
+          if (player.color === settlement.color && settlement.isCity) {
+            player.resources[settlement.type] =
+              player.resources[settlement.type] + 2;
+          }
+          if (player.color === settlement.color && !settlement.isCity) {
             player.resources[settlement.type]++;
           }
         });
       });
       return {
         ...state,
-        players: newPlayers
+        players
       };
     case REMOVE_RESOURCES:
-      let player = action.payload.player;
+      newPlayer = action.payload.player;
       switch (action.payload.type) {
         case "road":
-          player.resources.brick = player.resources.brick - COSTS.road.brick;
-          player.resources.lumber = player.resources.lumber - COSTS.road.lumber;
+          newPlayer.resources.brick =
+            newPlayer.resources.brick - COSTS.road.brick;
+          newPlayer.resources.lumber =
+            newPlayer.resources.lumber - COSTS.road.lumber;
           break;
         case "settlement":
-          player.resources.brick = player.resources.brick - COSTS.road.brick;
-          player.resources.lumber = player.resources.lumber - COSTS.road.lumber;
-          player.resources.grain = player.resources.grain - COSTS.road.grain;
-          player.resources.wool = player.resources.wool - COSTS.road.wool;
+          newPlayer.score++;
+          newPlayer.resources.brick =
+            newPlayer.resources.brick - COSTS.settlement.brick;
+          newPlayer.resources.lumber =
+            newPlayer.resources.lumber - COSTS.settlement.lumber;
+          newPlayer.resources.grain =
+            newPlayer.resources.grain - COSTS.settlement.grain;
+          newPlayer.resources.wool =
+            newPlayer.resources.wool - COSTS.settlement.wool;
           break;
         case "city":
-          player.resources.grain = player.resources.grain - COSTS.road.grain;
-          player.resources.ore = player.resources.ore - COSTS.road.ore;
+          newPlayer.score++;
+          newPlayer.resources.grain =
+            newPlayer.resources.grain - COSTS.city.grain;
+          newPlayer.resources.ore = newPlayer.resources.ore - COSTS.city.ore;
           break;
         default:
           break;
       }
-      newPlayers = state.players;
-      newPlayers[0] = action.payload.player;
+      players = state.players;
+      players[0] = newPlayer;
       return {
         ...state,
-        newPlayers
+        players
       };
     default:
       return { ...state };

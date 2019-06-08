@@ -1,43 +1,76 @@
 import React from "react";
 import { connect } from "react-redux";
 import { removeResources } from "../../../Redux/modules/player";
-import { changeSettlementColor } from "../../../Redux/modules/board";
-import { checkResources } from "../../../utils/checkResources";
+import {
+  changeSettlementColor,
+  changeSettlementType
+} from "../../../Redux/modules/board";
+import store from "../../../Redux/store";
+import { COSTS } from "../../../utils/checkResources";
 import "../../../Css/Board/settlement.css";
 
-const Settlement = ({
-  index,
-  type,
-  isCity,
-  settlements,
-  player,
-  turn,
-  changeSettlementColor,
-  checkResources,
-  removeResources
-}) => {
-  const color = settlements[index].color;
-  function handleChangeSettlementColorClick(index, player, color) {
-    if (turn < 8) {
+class Settlement extends React.Component {
+  updateStateFromStore = () => {
+    const currentState = this.props.players;
+    if (this.state !== currentState) {
+      this.setState(currentState);
+    }
+  };
+  componentDidMount() {
+    this.unsubscribeStore = store.subscribe(this.updateStateFromStore);
+  }
+  componentWillUnmount() {
+    this.unsubscribeStore();
+  }
+  handleChangeSettlementColorClick = (index, player, color) => {
+    if (this.props.turn < 9) {
       if (color === "black" && player.leftToPlace.settlement !== 0) {
-        changeSettlementColor(index, player, color);
-        return;
+        this.props.changeSettlementColor(index, player, color);
       }
     } else {
-      if (!checkResources(player, "settlement")) {
-        return <p>You don't have enough resources</p>;
+      if (!this.props.settlements[index].isCity && color === player.color) {
+        if (
+          player.resources.grain >= COSTS.city.grain &&
+          player.resources.ore >= COSTS.city.ore
+        ) {
+          this.props.removeResources(player, "city");
+          this.props.changeSettlementType(this.props.settlements[index]);
+        }
+      } else {
+        if (
+          player.resources.brick >= COSTS.settlement.brick &&
+          player.resources.lumber >= COSTS.settlement.lumber &&
+          player.resources.grain >= COSTS.settlement.grain &&
+          player.resources.wool >= COSTS.settlement.wool
+        ) {
+          this.props.removeResources(player, "settlement");
+          this.props.changeSettlementColor(index, player, color);
+        }
       }
-      removeResources(player, "settlement");
-      changeSettlementColor(index, player, color);
     }
+  };
+  render() {
+    return (
+      <div
+        className={
+          "crossroad " +
+          this.props.type +
+          " " +
+          this.props.settlements[this.props.index].color +
+          " " +
+          (this.props.isCity ? "square" : "circle")
+        }
+        onClick={() =>
+          this.handleChangeSettlementColorClick(
+            this.props.index,
+            this.props.player,
+            this.props.settlements[this.props.index].color
+          )
+        }
+      />
+    );
   }
-  return (
-    <div
-      className={"crossroad " + type + " " + color}
-      onClick={() => handleChangeSettlementColorClick(index, player, color)}
-    />
-  );
-};
+}
 
 const mapStateToProps = state => ({
   player: state.players.players[0],
@@ -47,8 +80,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   changeSettlementColor,
-  checkResources,
-  removeResources
+  removeResources,
+  changeSettlementType
 };
 
 export default connect(

@@ -3,6 +3,9 @@ import { roadPlaced, settlementPlaced } from "./player";
 
 const CHANGE_ROAD_COLOR = "CHANGE_ROAD_COLOR";
 const CHANGE_SETTLEMENT_COLOR = "CHANGE_SETTLEMENT_COLOR";
+const CHANGE_SETTLEMENT_TYPE = "CHANGE_SETTLEMENT_TYPE";
+
+let newSettlement, settlements, roads;
 
 //SETTING UP INITIAL STATE AND THE START OF THE GAME
 const numbers = shuffle([
@@ -148,6 +151,13 @@ export const changeRoadColor = (number, player, currentColor) => dispatch => {
   dispatch(roadPlaced(player));
 };
 
+export const changeSettlementType = settlement => {
+  return {
+    type: CHANGE_SETTLEMENT_TYPE,
+    payload: settlement
+  };
+};
+
 export const changeSettlementColor = (
   number,
   player,
@@ -163,7 +173,7 @@ export const changeSettlementColor = (
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case CHANGE_ROAD_COLOR:
-      let roads = [...state.roads];
+      roads = [...state.roads];
       const newRoad = {
         ...roads[action.payload.number],
         color: action.payload.player.color
@@ -174,12 +184,21 @@ const reducer = (state = initialState, action) => {
         roads
       };
     case CHANGE_SETTLEMENT_COLOR:
-      let settlements = [...state.settlements];
-      const newSettlement = {
+      settlements = [...state.settlements];
+      newSettlement = {
         ...settlements[action.payload.number],
         color: action.payload.player.color
       };
       settlements[action.payload.number] = newSettlement;
+      return {
+        ...state,
+        settlements
+      };
+    case CHANGE_SETTLEMENT_TYPE:
+      newSettlement = action.payload;
+      newSettlement.isCity = true;
+      settlements = state.settlements;
+      settlements[newSettlement.index] = newSettlement;
       return {
         ...state,
         settlements
